@@ -1,6 +1,7 @@
-FROM python:3.9-slim
+# Slim မဟုတ်ဘဲ Full Version ကို ပြောင်းသုံးထားသည် (SSL Error ဖြေရှင်းချက်)
+FROM python:3.10
 
-# ၁. OS Tools များ (ca-certificates ကို အဓိက ထပ်ဖြည့်ထားသည်)
+# ၁. OS Tools များ
 RUN apt-get update && apt-get install -y git ffmpeg build-essential ca-certificates
 
 # ၂. Source Code ဆွဲယူခြင်း
@@ -20,7 +21,7 @@ RUN echo 'import os' > config.py && \
     echo '    DB_URI = os.environ.get("DATABASE_URL", "")' >> config.py && \
     echo '    SESSION_NAME = os.environ.get("SESSION_NAME", "Bot")' >> config.py
 
-# ၅. Requirements ပြင်ဆင်ခြင်း (certifi ကိုပါ ထပ်ထည့်ပေးသည်)
+# ၅. Requirements ပြင်ဆင်ခြင်း
 RUN sed -i '/aiofiles/d' requirements.txt
 RUN pip install aiofiles
 RUN pip install certifi
